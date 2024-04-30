@@ -1,10 +1,13 @@
 import { Alert, Box, Snackbar, Stack } from "@mui/material"
+import { CssBaseline } from "@mui/material"
+import { ThemeProvider } from "@mui/material/styles"
 import axios from "axios"
 import { useEffect, useState } from "react"
 
 import Search from "./components/Search"
 import WeatherTodayCard from "./components/WeatherTodayCard"
 import useRecentSearchesStore from "./store/store"
+import theme from "./theme"
 
 const BASE_URL = "http://localhost:3001"
 
@@ -77,36 +80,45 @@ function WeatherApp() {
     }, [])
 
     return (
-        <Box>
-            <Snackbar
-                open={snackbarOpen.open}
-                autoHideDuration={6000}
-                onClose={handleClose}
-            >
-                <Alert
-                    onClose={handleClose}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: "100%" }}
-                >
-                    {snackbarOpen.message}
-                </Alert>
-            </Snackbar>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
 
-            <Search
-                data={data}
-                onSearch={handleSearch}
-                onCityClear={handleClearCity}
-            />
-            <Stack width="vw" alignItems="center" justifyContent="center" p={2}>
-                {data.length > 0 && (
-                    <WeatherTodayCard
-                        location={data[0][1].location}
-                        current={data[0][1].current}
-                    />
-                )}
-            </Stack>
-        </Box>
+            <Box>
+                <Snackbar
+                    open={snackbarOpen.open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="error"
+                        variant="filled"
+                        sx={{ width: "100%" }}
+                    >
+                        {snackbarOpen.message}
+                    </Alert>
+                </Snackbar>
+
+                <Search
+                    data={data}
+                    onSearch={handleSearch}
+                    onCityClear={handleClearCity}
+                />
+                <Stack
+                    width="vw"
+                    alignItems="center"
+                    justifyContent="center"
+                    p={2}
+                >
+                    {data.length > 0 && (
+                        <WeatherTodayCard
+                            location={data[0][1].location}
+                            current={data[0][1].current}
+                        />
+                    )}
+                </Stack>
+            </Box>
+        </ThemeProvider>
     )
 }
 

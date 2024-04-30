@@ -1,6 +1,6 @@
 # Weather App
 
-## Vite + Typescript + React + Express + MUI + Docker 
+## Vite + Typescript + React + Express + MUI + Docker + Zustand
 
 This is a simple weather app that uses the weatherapi.com API to fetch weather data for a searched city. It can serve as boilerplate for a fullstack application using Vite, Typescript, React, Express, Material-UI, Zustand, Docker, and Docker Compose.
 
@@ -52,3 +52,9 @@ cd server
 npm install
 npm run dev
 ```
+
+### Troubleshooting
+
+If you ran the app with docker compose, it's possible that you run into cached data errors. make sure to clear out any old dangling images / containers before running the app again.
+
+```bash
