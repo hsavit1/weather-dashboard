@@ -1,4 +1,4 @@
-import { Box, Snackbar, Stack } from "@mui/material"
+import { Alert, Box, Snackbar, Stack } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 
@@ -82,9 +82,16 @@ function WeatherApp() {
                 open={snackbarOpen.open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                message={snackbarOpen.message}
-                color="error"
-            />
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {snackbarOpen.message}
+                </Alert>
+            </Snackbar>
 
             <Search
                 data={data}
