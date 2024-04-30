@@ -1,0 +1,21 @@
+version: "3.9"  # Use a recent Docker Compose version, if possible
+
+services:
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"  # Vite port exposed to host 
+    volumes: 
+      - ./client:/app   # Mount client code for development mode
+      - /app/node_modules  # Exclude node_modules from volume mounting
+
+  server:
+    build: ./server
+    ports:
+      - "3001:3001"  # Backend port exposed to host
+    volumes:
+      - ./server:/app  # Mount server code for development mode
+      - /app/node_modules # Exclude node_modules from volume mounting
+    depends_on:  # Ensure server starts after client
+      - client  
+      
