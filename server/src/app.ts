@@ -23,6 +23,11 @@ app.get('/api/weather', async (req, res) => {
     return res.status(400).json({ error: 'Please provide a city name' });
   }
 
+  // regex to check if city contains only letters and spaces
+  if (!/^[a-zA-Z\s]*$/.test(city)) {
+    return res.status(400).json({ error: 'City name must contain only letters' });
+  }
+  
   try {
     const response = await axios.get<WeatherData>(`${BASE_URL}/current.json?key=${API_KEY}&q=${city}`); // Adjust API call if needed
     res.json(response.data);
