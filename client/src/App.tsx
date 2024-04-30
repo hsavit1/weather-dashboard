@@ -39,19 +39,17 @@ function WeatherApp() {
                 `${BASE_URL}/api/weather?city=${value}`
             )
 
-            console.log(response.data)
             addData(value, response.data)
         } catch (error) {
             console.error(error)
             setSnackbarOpen({
                 open: true,
-                message: `Error fetching weather data: ${error}`
+                message: `Error fetching weather data: ${(error as Error).message}`
             })
         }
     }
 
     const handleClearCity = (city: string) => {
-        console.log("Clearing city", city)
         removeData(city)
     }
 
@@ -69,7 +67,7 @@ function WeatherApp() {
                     console.error(error)
                     setSnackbarOpen({
                         open: true,
-                        message: `Error fetching weather data: ${error}`
+                        message: `Error fetching weather data: ${(error as Error).message}`
                     })
                 }
             }
