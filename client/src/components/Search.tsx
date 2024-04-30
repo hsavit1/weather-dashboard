@@ -10,24 +10,24 @@ import {
 } from "@mui/material"
 import { ChangeEvent, useState } from "react"
 
-import useRecentSearchesStore from "../store/store"
+import { WeatherData } from "../types"
 
 const uppercaseCityName = (city: string) =>
     city.replace(/\b\w/g, (char) => char.toUpperCase())
 
 interface SearchBarProps {
+    data: [string, WeatherData][]
     onSearch: (value: string) => void
     onCityClear: (city: string) => void
 }
-export default function Search({ onSearch, onCityClear }: SearchBarProps) {
-    const { data, removeData } = useRecentSearchesStore()
-
+export default function Search({
+    data,
+    onSearch,
+    onCityClear
+}: SearchBarProps) {
     const [inputValue, setInputValue] = useState("")
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log({
-            event
-        })
         setInputValue(event.target.value)
     }
 
@@ -35,12 +35,6 @@ export default function Search({ onSearch, onCityClear }: SearchBarProps) {
         if (event.key === "Enter" && inputValue !== "") {
             onSearch(inputValue)
         }
-    }
-
-    const handleClearCity = (city: string) => {
-        console.log("Clearing city", city)
-        removeData(city)
-        onCityClear(city)
     }
 
     const options = data.map(([city]) => uppercaseCityName(city))
@@ -71,9 +65,10 @@ export default function Search({ onSearch, onCityClear }: SearchBarProps) {
                         renderOption={(props, option) => {
                             return (
                                 <Box
+                                    {...props}
                                     component="li"
                                     sx={{ "& > img": { mr: 2 } }}
-                                    {...props}
+                                    key={option}
                                 >
                                     {option}
                                     <IconButton
@@ -84,9 +79,7 @@ export default function Search({ onSearch, onCityClear }: SearchBarProps) {
                                         }}
                                         onClick={(event) => {
                                             event.stopPropagation() // Prevent bubbling
-                                            handleClearCity(
-                                                option.toLowerCase()
-                                            )
+                                            onCityClear(option.toLowerCase())
                                         }}
                                     >
                                         <CloseIcon fontSize="small" />

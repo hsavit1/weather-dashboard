@@ -1,6 +1,6 @@
 import { Box, Snackbar, Stack } from "@mui/material"
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Search from "./components/Search"
 import WeatherTodayCard from "./components/WeatherTodayCard"
@@ -9,7 +9,7 @@ import useRecentSearchesStore from "./store/store"
 const BASE_URL = "http://localhost:3001"
 
 function WeatherApp() {
-    const { data, addData } = useRecentSearchesStore()
+    const { data, addData, removeData } = useRecentSearchesStore()
 
     const [snackbarOpen, setSnackbarOpen] = useState<{
         open: boolean
@@ -50,7 +50,33 @@ function WeatherApp() {
         }
     }
 
-    const handleCityClear = (city: string) => {}
+    const handleClearCity = (city: string) => {
+        console.log("Clearing city", city)
+        removeData(city)
+    }
+
+    // hook to fetch the weather data for the most recent city, if the window is refreshed
+    useEffect(() => {
+        const fetchRecentWeather = async () => {
+            if (data.length > 0) {
+                const recentCity = data[0][0] // Get the most recently searched city
+                try {
+                    const response = await axios.get(
+                        `${BASE_URL}/api/weather?city=${recentCity}`
+                    )
+                    addData(recentCity, response.data)
+                } catch (error) {
+                    console.error(error)
+                    setSnackbarOpen({
+                        open: true,
+                        message: `Error fetching weather data: ${error}`
+                    })
+                }
+            }
+        }
+
+        fetchRecentWeather()
+    }, [])
 
     return (
         <Box>
@@ -61,7 +87,11 @@ function WeatherApp() {
                 message="Note archived"
             />
 
-            <Search onSearch={handleSearch} onCityClear={handleCityClear} />
+            <Search
+                data={data}
+                onSearch={handleSearch}
+                onCityClear={handleClearCity}
+            />
             <Stack width="vw" alignItems="center" justifyContent="center" p={2}>
                 {data.length > 0 && (
                     <WeatherTodayCard

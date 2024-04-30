@@ -39,7 +39,7 @@ export default function WeatherTodayCard({ location, current }: WeatherData) {
                             {formattedDate}
                         </Typography>
                         <Typography variant="body2" color={"secondary"}>
-                            {formattedTime}
+                            Local Time: {formattedTime}
                         </Typography>
                     </CardContent>
                 </Card>
