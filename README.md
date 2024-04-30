@@ -6,6 +6,8 @@ This is a simple weather app that uses the weatherapi.com API to fetch weather d
 
 The weatherapi.com API key in this project will soon expire. To get a new one, visit [weatherapi.com](https://www.weatherapi.com/). you can replace the API key in the `.env` file in the `server` directory or write it directly in the `server/src/app.ts` file.
 
+![screenshot](screenshot.png)
+
 ### Features
 
 - Search for a city and get the current weather
