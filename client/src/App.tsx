@@ -84,7 +84,8 @@ function WeatherApp() {
                 open={snackbarOpen.open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                message="Note archived"
+                message={snackbarOpen.message}
+                color="error"
             />
 
             <Search
